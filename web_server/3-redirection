@@ -1,8 +1,24 @@
 #!/usr/bin/env bash
-#setting up nginx server
-sudo apt-get -y update
-sudo apt-get -y install nginx
-sudo ufw allow 'Nginx HTTP'
-echo "Holberton School" | sudo tee /var/www/html/index.nginx-debian.html
-sudo sed -i "/listen 80 default_server;/a rewrite ^/redirect_me https://onepiece.fandom.com/wiki/One_Piece_Wiki permanent;" /etc/nginx/sites-enabled/default
+# script that install nginx and configure it to redirect to another page when
+# accessing the /redirect_me page.
+sudo apt update -y
+sudo apt install nginx -y
+
+# store configuration content
+new_config=\
+"server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+               root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+        server_name _;
+        location / {
+                try_files \$uri \$uri/ =404;
+        }
+        location /redirect_me { 
+            return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+        }
+}
+"
+echo "$new_config" > /etc/nginx/sites-available/default
 sudo service nginx restart
