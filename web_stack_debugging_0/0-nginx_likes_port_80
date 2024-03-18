@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+cd /etc/nginx/sites-enabled
+sed -i -g 'g/8080/80'  default
+service nginx start
