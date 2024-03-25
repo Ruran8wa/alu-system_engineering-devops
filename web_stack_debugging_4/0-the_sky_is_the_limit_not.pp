@@ -1,4 +1,3 @@
-
 #fix our stack so that we get to 0
 
 exec { 'fix_file':
